@@ -18,6 +18,7 @@ let currentMonth = date.getMonth() + 1
 let currentDay = date.getDate()
 
 calculate.addEventListener('click', (e) => {
+  if (validateDate() == false) return
   if (e.target.matches('#calculate') && year.value != '') {
     displayYears = calculateYears(year, currentYear)
   }
@@ -34,12 +35,16 @@ calculate.addEventListener('click', (e) => {
 
 function calculateYears(year, currentYear) {
   let yearAge = currentYear - year.value
+  if (year.value < 1908 || year.value > 2025) {
+    return
+  }
   if (monthIsNegative == true) {
     yearAge -= 1
   }
   console.log(yearAge)
   return yearAge
 }
+
 function calculateMonths(month, currentMonth) {
   let monthAge = currentMonth - month.value
   if (monthAge < 0) {
@@ -54,6 +59,9 @@ function calculateMonths(month, currentMonth) {
 }
 function calculateDays(day, currentDay) {
   let dayAge = currentDay - day.value
+  if (day.value > 31 || day.value < 1) {
+    return console.log('please enter a value between 1 and 31')
+  }
   if (dayAge < 0) {
     dayAge += daysInMonth(currentMonth - 1)
     dayIsNegative = true
@@ -77,4 +85,27 @@ function addToDisplay(yearAge, monthAge, dayAge) {
   yearDisplay.textContent = `${yearAge} Years`
   monthDisplay.textContent = `${monthAge} Months`
   dayDisplay.textContent = `${dayAge} Days`
+}
+
+function validateDate() {
+  if ((year.value, month.value, day.value == '')) {
+    console.log('one or more fields are empty')
+    return false
+  } else if ((year.value, month.value, day.value != '')) {
+    if (day.value < 0 || day.value > 31) {
+      console.log('enter a day between 1-31')
+      day.value = ''
+      return false
+    }
+    if (month.value < 0 || month.value > 12) {
+      console.log('enter a month between 1-12')
+      month.value = ''
+      return false
+    }
+    if (year.value < 1908 || year.value > 2025) {
+      console.log('enter a year between 1908-2025')
+      year.value = ''
+      return false
+    }
+  } else return true
 }
